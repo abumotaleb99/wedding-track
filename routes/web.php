@@ -20,3 +20,6 @@ Route::post('/add-guest', [WeddingTrackController::class, 'addGuestInvitation'])
 Route::get('/guest/delete/{id}', [WeddingTrackController::class, 'deleteGuest']);
 
 Route::get('/check-in/list', [WeddingTrackController::class, 'getCheckInList']);
+Route::get('/guest/{id}', [WeddingTrackController::class, 'getInvitedGuestById']);
+Route::post('/check-in', [WeddingTrackController::class, 'checkIn']);
+

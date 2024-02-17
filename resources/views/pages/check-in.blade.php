@@ -1,5 +1,10 @@
 @extends('layout.app')
 @section('content')
+<head>
+  <!-- Other meta tags and stylesheets -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+
 <div class="bg-[#fff] w-full lg:max-w-7xl mx-auto px-4 py-2">
   <div class="overflow-x-auto">
     <div class="inline-block min-w-full rounded-md overflow-hidden">
@@ -65,7 +70,107 @@
   }
 
   getCheckInList();
-  
+
+</script>
+
+{{-- Axios CDN --}}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  // Listen for keydown event
+  document.addEventListener('keydown', function(e) {
+      // add scan property to window if it does not exist
+      if (!window.hasOwnProperty('scan')) {
+          window.scan = [];
+      }
+      
+      // If the key stroke appears after 10 ms, empty the scan array
+      if (window.scan.length > 0 && (e.timeStamp - window.scan.slice(-1)[0].timeStamp) > 10) {
+          window.scan = [];
+      }
+      
+      // If the key pressed is Enter and scan array contains keystrokes
+      // Dispatch a 'scanComplete' event with the scanned string as detail
+      // Empty the scan array after dispatching the event
+      if (e.key === "Enter" && window.scan.length > 0) {
+          let scannedString = window.scan.reduce(function(scannedString, entry) {
+              return scannedString + entry.key;
+          }, "");
+          window.scan = [];
+          // console.log(scannedString); 
+          return document.dispatchEvent(new CustomEvent('scanComplete', { detail: scannedString }));
+      }
+      
+      // Do not listen to the Shift event, since the key for the next keystroke already contains a capital letter
+      // or to be specific the letter that appears when that key is pressed with the Shift key
+      if (e.key !== "Shift") {
+          // Push `key`, `timeStamp`, and calculated `timeStampDiff` to the scan array
+          let data = { key: e.key, timeStamp: e.timeStamp, timeStampDiff: window.scan.length > 0 ? e.timeStamp - window.scan.slice(-1)[0].timeStamp : 0 };
+          window.scan.push(data);
+      }
+  });
+  // Listen to the `scanComplete` event on the document
+
+  document.addEventListener('scanComplete', async function(e) { 
+      console.log(e.detail); // Log the scanned ID
+
+      try {
+          let res = await axios.get("/guest/"+ parseInt(e.detail));
+          // console.log("API Response:", res);
+
+          if (res.data.success) {
+            // If guest information is retrieved successfully, save the ID in the check-ins table
+            try {
+                let checkInResponse = await axios.post("/check-in", { guest_invitation_id: res.data.data.id });
+                // console.log("Check-in Response:", checkInResponse); 
+
+                if (checkInResponse.data.status == 'success') {
+                  getCheckInList();
+                  successToast(checkInResponse.response.data['message']);
+                }
+
+            } catch (error) {
+              // console.error("Error saving check-in:", error); 
+              if (error.response) {
+                if (error.response.status === 400 && error.response.data['status'] === 'error') {
+                  errorToast(error.response.data['message']);
+                  return;
+                }
+              }
+            }
+        }
+
+      } catch (error) {
+        if (error.response) {
+          errorToast(error.response.data['message']);
+        }
+      }
+  });
+
+// Toast Message
+function successToast(message) {
+    Toastify({
+        text: message,
+        gravity: "top", 
+        position: "right",
+        style: {
+            background: "green",
+        }
+
+    }).showToast();
+}
+
+function errorToast(message) {
+    Toastify({
+        text: message,
+        gravity: "top", 
+        position: "right", 
+        style: {
+            background: "red",
+        }
+
+    }).showToast();
+}
 </script>
 
 @endsection

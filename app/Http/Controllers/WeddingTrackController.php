@@ -84,6 +84,60 @@ class WeddingTrackController extends Controller
         ], 200);
     }
 
-    
+    public function getInvitedGuestById($barcodeId) {
+        try {
+            $guest = GuestInvitation::where('unique_identifier', $barcodeId)->first();
+            if ($guest) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Guest information retrieved successfully.',
+                    'data' => $guest
 
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Guest not found.',
+                    'message' => 'Invalid Barcode. Please try again!'
+                ], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Internal server error.',
+            ], 500);
+        }
+    }
+
+    public function checkIn(Request $request)
+    {
+        try {
+            $guestInvitationId = $request->input('guest_invitation_id');
+
+            $existingCheckIn = CheckIn::where('guest_invitation_id', $guestInvitationId)->first();
+            if ($existingCheckIn) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Already checked In.',
+                ], 400);
+            }
+
+            $checkIn = new CheckIn();
+            $checkIn->guest_invitation_id = $guestInvitationId;
+            $checkIn->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Check In successful.',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Internal server error.',
+            ], 500);
+        }
+    }
+
+    
+    
 }
