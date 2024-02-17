@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WeddingTrackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WeddingTrackController::class, 'showCheckInList']);
+Route::get('/guest-invitations', [WeddingTrackController::class, 'showGuestInvitationsPage']);
+Route::post('/add-guest', [WeddingTrackController::class, 'addGuestInvitation']);
+Route::get('guest/delete/{id}', [WeddingTrackController::class, 'deleteGuest']);
