@@ -78,10 +78,6 @@
         document.getElementById('loader').classList.add('d-none');
       });
 
-      // DataTables
-      let table = new DataTable('#myTable', {
-        order: [[0, 'desc']],
-      });
     </script>
   </body>
 </html>

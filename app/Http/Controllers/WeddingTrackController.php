@@ -69,7 +69,9 @@ class WeddingTrackController extends Controller
             abort(404);  
         }
 
+        CheckIn::where('guest_invitation_id', $guest->id)->delete();
         $guest->delete();
+        
         return redirect('/guest-invitations')->with("success", "Guest successfully deleted.");
     }
 
