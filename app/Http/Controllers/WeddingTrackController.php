@@ -72,6 +72,18 @@ class WeddingTrackController extends Controller
         $guest->delete();
         return redirect('/guest-invitations')->with("success", "Guest successfully deleted.");
     }
+
+    public function getCheckInList()
+    {
+        $checkIns = CheckIn::with('guestInvitation')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'CheckIn data retrieved successfully',
+            'data' => $checkIns
+        ], 200);
+    }
+
     
 
 }
