@@ -101,7 +101,8 @@
         document.getElementById('closeAddGuestModalBtn').click();
 
         showLoader();
-        let res=await axios.post("/add-guest", { 
+         var baseUrl = '{{ config('app.url') }}';
+        let res=await axios.post(baseUrl+"/add-guest", { 
           name: name,
           gender: gender,
         });

@@ -40,7 +40,8 @@
 
   async function getCheckInList() {
       try {
-          const response = await fetch("/check-in/list");
+          var baseUrl = '{{ config('app.url') }}';
+          const response = await fetch(baseUrl+"/check-in/list");
           if (!response.ok) {
               throw new Error("Failed to fetch check-in list.");
           }
