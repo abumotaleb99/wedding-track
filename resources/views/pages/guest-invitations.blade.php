@@ -92,7 +92,7 @@
   </div>
 </div>
 
-
+@push('script')
 <script>  
   async function addGuest() {
     try {    
@@ -175,11 +175,14 @@
   }
 </script>
 
-@if(session('success')) <!-- Check for success flash message -->
+@if(session('success'))
 <script>
-    // Display success toast
+  // Display success toast
+  window.onload = ()=>{
     successToast("{{ session('success') }}");
+  }
 </script>
 @endif
+@endpush
 
 @endsection

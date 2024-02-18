@@ -1,9 +1,5 @@
 @extends('layout.app')
 @section('content')
-<head>
-  <!-- Other meta tags and stylesheets -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-</head>
 
 <div class="bg-[#fff] w-full lg:max-w-7xl mx-auto px-4 py-2">
   <div class="overflow-x-auto">
@@ -26,6 +22,7 @@
   </div>
 </div>
 
+@push('script')
 <script>
   function formatDateTime(dateTimeString) {
       const date = new Date(dateTimeString);
@@ -72,9 +69,6 @@
   getCheckInList();
 
 </script>
-
-{{-- Axios CDN --}}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
   // Listen for keydown event
@@ -147,34 +141,7 @@
       }
   });
 
-// Toast Message
-function successToast(message) {
-    Toastify({
-        text: message,
-        gravity: "top", 
-        position: "right",
-        style: {
-            background: "green",
-        }
-
-    }).showToast();
-}
-
-function errorToast(message) {
-    Toastify({
-        text: message,
-        gravity: "top", 
-        position: "right", 
-        style: {
-            background: "red",
-        }
-
-    }).showToast();
-}
-
-
-
-
 </script>
+@endpush
 
 @endsection

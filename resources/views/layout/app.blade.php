@@ -64,7 +64,6 @@
     </div>
 
     @yield('content')
-
     
     <script src="{{asset('assets/js/jquery-3.7.0.min.js')}}"></script>
     <script src="{{asset('assets/js/toastify-js.js')}}"></script>
@@ -77,7 +76,7 @@
       window.addEventListener('load', function() {
         document.getElementById('loader').classList.add('d-none');
       });
-
     </script>
+    @stack('script')
   </body>
 </html>

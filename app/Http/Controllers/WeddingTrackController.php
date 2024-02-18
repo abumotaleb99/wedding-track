@@ -140,6 +140,13 @@ class WeddingTrackController extends Controller
         }
     }
 
+    public function invitations() {
+        $data = GuestInvitation::get();
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+
     
     
 }
