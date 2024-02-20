@@ -122,7 +122,7 @@
 
         showLoader();
          var baseUrl = '{{ config('app.url') }}';
-        let res=await axios.post(baseUrl+"/add-guest", { 
+        let res=await axios.post(baseUrl+"/api/add-guest", { 
           guest_id: guestId,
           name: name,
           company_name: companyName,

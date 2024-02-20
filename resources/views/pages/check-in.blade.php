@@ -5,7 +5,7 @@
   <div class="overflow-x-auto">
     <div class="inline-block min-w-full rounded-md overflow-hidden">
       <h2 class="text-2xl text-[#090B10] font-montserrat font-bold py-3">Check-In List</h2>
-      <table class="min-w-full" id="myTable">
+      <table class="min-w-full" id="checkInTable">
         <thead>
           <tr class="border">
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">ID</th>
@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody id="checkInTableBody">
-          <!-- Table rows will be dynamically populated here -->
+          
         </tbody>
       </table>
     </div>
@@ -36,42 +36,42 @@
     const period = date.getHours() >= 12 ? 'PM' : 'AM';
 
     return `${year}-${month}-${day} - ${hours}:${minutes} ${period}`;
-}
-
-
-  async function getCheckInList() {
-      try {
-          var baseUrl = '{{ config('app.url') }}';
-          const response = await fetch(baseUrl+"/check-in/list");
-          if (!response.ok) {
-              throw new Error("Failed to fetch check-in list.");
-          }
-          const data = await response.json();
-          populateTable(data.data);
-      } catch (error) {
-          console.error(error);
-      }
   }
 
-  function populateTable(data) {
+  async function getCheckInList() {
+    try {
+      var baseUrl = '{{ config('app.url') }}';
+      const response = await fetch(baseUrl + "/api/check-in/list");
+      if (!response.ok) {
+        throw new Error("Failed to fetch check-in list.");
+      }
+      const data = await response.json();
+
       const tableBody = document.getElementById("checkInTableBody");
       tableBody.innerHTML = ""; // Clear existing rows
-      data.forEach((item, index) => {
-          const formattedDateTime = formatDateTime(item.created_at);
-          const row = `<tr class="border">
-              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${index + 1}</td>
-              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.guest_id}</td>
-              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.name}</td>
-              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.company_name}</td>
-              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.gender}</td>
-              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${formattedDateTime}</td>
-          </tr>`;
-          tableBody.insertAdjacentHTML("beforeend", row);
+
+      data.data.forEach((item, index) => {
+        const formattedDateTime = formatDateTime(item.created_at);
+        const row = `<tr class="border">
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${index + 1}</td>
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.guest_id}</td>
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.name}</td>
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.company_name}</td>
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.gender}</td>
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${formattedDateTime}</td>
+        </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
       });
+
+      $('#checkInTable').DataTable({
+        order: [[0, 'desc']],
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   getCheckInList();
-
 </script>
 
 <script>
@@ -113,13 +113,13 @@
       console.log(e.detail); // Log the scanned ID
 
       try {
-          let res = await axios.get("/guest/"+ parseInt(e.detail));
+          let res = await axios.get("/api/guest/"+ parseInt(e.detail));
           // console.log("API Response:", res);
 
           if (res.data.success) {
             // If guest information is retrieved successfully, save the ID in the check-ins table
             try {
-                let checkInResponse = await axios.post("/check-in", { guest_invitation_id: res.data.data.id });
+                let checkInResponse = await axios.post("/api/check-in", { guest_invitation_id: res.data.data.id });
                 // console.log("Check-in Response:", checkInResponse); 
 
                 if (checkInResponse.data.status == 'success') {

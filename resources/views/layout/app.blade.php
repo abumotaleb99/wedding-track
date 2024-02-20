@@ -75,10 +75,11 @@
     new DataTable('#myTable',{
         order:[[0,'desc']],
     });
-      // Show the loader when the page starts loading
-      window.addEventListener('load', function() {
-        document.getElementById('loader').classList.add('d-none');
-      });
+
+    // Show the loader when the page starts loading
+    window.addEventListener('load', function() {
+      document.getElementById('loader').classList.add('d-none');
+    });
     </script>
     @stack('script')
   </body>

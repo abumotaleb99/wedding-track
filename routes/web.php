@@ -16,9 +16,9 @@ use App\Http\Controllers\WeddingTrackController;
 
 Route::get('/', [WeddingTrackController::class, 'showCheckInList']);
 Route::get('/guest-invitations', [WeddingTrackController::class, 'showGuestInvitationsPage']);
-Route::post('/add-guest', [WeddingTrackController::class, 'addGuestInvitation']);
+// Route::post('/add-guest', [WeddingTrackController::class, 'addGuestInvitation']);
 Route::get('/guest/delete/{id}', [WeddingTrackController::class, 'deleteGuest']);
 
-Route::get('/check-in/list', [WeddingTrackController::class, 'getCheckInList']);
-Route::get('/guest/{id}', [WeddingTrackController::class, 'getInvitedGuestById']);
-Route::post('/check-in', [WeddingTrackController::class, 'checkIn']);
+// Route::get('/check-in/list', [WeddingTrackController::class, 'getCheckInList']);
+// Route::get('/guest/{id}', [WeddingTrackController::class, 'getInvitedGuestById']);
+// Route::post('/check-in', [WeddingTrackController::class, 'checkIn']);
