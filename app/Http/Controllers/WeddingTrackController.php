@@ -21,7 +21,9 @@ class WeddingTrackController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
+                'guest_id' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
+                'company_name' => 'required|string|max:255',
                 'gender' => 'required|string|in:Male,Female,Other',
             ]);
     
@@ -33,15 +35,17 @@ class WeddingTrackController extends Controller
                 ], 422);
             }
 
-            $unique_identifier = mt_rand(1000, 9999);
+            $unique_identifier = mt_rand(100000, 999999);            
 
             while ($this->checkUniqueIdentifierExists($unique_identifier)) {
-                $unique_identifier = mt_rand(1000, 9999);
+                $unique_identifier = mt_rand(100000, 999999);
             }
 
             $guestInvitation = new GuestInvitation();
             $guestInvitation->unique_identifier = $unique_identifier;
+            $guestInvitation->guest_id = $request->input('guest_id');
             $guestInvitation->name = $request->input('name');
+            $guestInvitation->company_name = $request->input('company_name');
             $guestInvitation->gender = $request->input('gender');
             $guestInvitation->save();
     

@@ -9,7 +9,9 @@
         <thead>
           <tr class="border">
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">ID</th>
+            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Guest ID</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Name</th>
+            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Company Name</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Gender</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Entry Time</th>
           </tr>
@@ -58,7 +60,9 @@
           const formattedDateTime = formatDateTime(item.created_at);
           const row = `<tr class="border">
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${index + 1}</td>
+              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.guest_id}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.name}</td>
+              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.company_name}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.gender}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${formattedDateTime}</td>
           </tr>`;

@@ -16,7 +16,9 @@
         <thead>
           <tr class="border">
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">ID</th>
+            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Guest ID</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Name</th>
+            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Company Name</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Gender</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Barcode</th>
             <th></th>
@@ -28,7 +30,9 @@
             @foreach ($guestInvitations as $guest)
             <tr class="border">
               <td class=" text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $i++ }}</td>
+              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->guest_id }}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->name }}</td>
+              <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->company_name }}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->gender }}</td>
               <td id="barcode-svg-{{ $guest->unique_identifier }}">
                   {!!  DNS2D::getBarcodeSVG($guest->unique_identifier, 'DATAMATRIX' ,10,10) !!}
@@ -62,12 +66,30 @@
       </div>
       <div class="">
         <div class="pb-4">
+          <label class="block text-sm text-[#090B10] font-montserrat font-semibold pb-2">Guest ID</label>
+          <input
+            type="text"
+            id="guest_id"
+            class="block w-full rounded-md border border-[#D9DDE3] text-sm text-[#090B10] font-nunito font-normal px-3 py-2"
+            placeholder="Enter ID"
+          />
+        </div>
+        <div class="pb-4">
           <label class="block text-sm text-[#090B10] font-montserrat font-semibold pb-2">Name</label>
           <input
             type="text"
             id="name"
             class="block w-full rounded-md border border-[#D9DDE3] text-sm text-[#090B10] font-nunito font-normal px-3 py-2"
             placeholder="Enter name"
+          />
+        </div>
+        <div class="pb-4">
+          <label class="block text-sm text-[#090B10] font-montserrat font-semibold pb-2">Company Name</label>
+          <input
+            type="text"
+            id="company_name"
+            class="block w-full rounded-md border border-[#D9DDE3] text-sm text-[#090B10] font-nunito font-normal px-3 py-2"
+            placeholder="Enter company name"
           />
         </div>
         <div class="pb-4">
@@ -92,14 +114,18 @@
 <script>  
   async function addGuest() {
     try {    
+        let guestId = document.getElementById('guest_id').value;
         let name = document.getElementById('name').value;
+        let companyName = document.getElementById('company_name').value;
         let gender = document.getElementById('gender').value;
         document.getElementById('closeAddGuestModalBtn').click();
 
         showLoader();
          var baseUrl = '{{ config('app.url') }}';
         let res=await axios.post(baseUrl+"/add-guest", { 
+          guest_id: guestId,
           name: name,
+          company_name: companyName,
           gender: gender,
         });
         hideLoader();

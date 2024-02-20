@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('guest_invitations', function (Blueprint $table) {
             $table->id();
+            $table->string('guest_id');
             $table->string('unique_identifier');
             $table->string('name');
+            $table->string('company_name');
             $table->string('gender');
             $table->timestamps();
         });
