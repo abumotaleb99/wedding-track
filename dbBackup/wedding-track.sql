@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2024 at 04:57 PM
+-- Generation Time: Feb 20, 2024 at 11:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,8 +39,8 @@ CREATE TABLE `check_ins` (
 --
 
 INSERT INTO `check_ins` (`id`, `guest_invitation_id`, `created_at`, `updated_at`) VALUES
-(4, 12, '2024-02-17 15:52:59', '2024-02-17 15:52:59'),
-(6, 3, '2024-02-17 15:57:10', '2024-02-17 15:57:10');
+(1, 1, '2024-02-20 22:20:36', '2024-02-20 22:20:36'),
+(2, 3, '2024-02-20 22:20:36', '2024-02-20 22:20:36');
 
 -- --------------------------------------------------------
 
@@ -50,8 +50,10 @@ INSERT INTO `check_ins` (`id`, `guest_invitation_id`, `created_at`, `updated_at`
 
 CREATE TABLE `guest_invitations` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `guest_id` varchar(255) NOT NULL,
   `unique_identifier` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
   `gender` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -61,17 +63,10 @@ CREATE TABLE `guest_invitations` (
 -- Dumping data for table `guest_invitations`
 --
 
-INSERT INTO `guest_invitations` (`id`, `unique_identifier`, `name`, `gender`, `created_at`, `updated_at`) VALUES
-(1, '8147', 'Abu Motaleb', 'Male', '2024-02-17 04:01:58', '2024-02-17 04:01:58'),
-(2, '4234', 'Rimu Islam', 'Male', '2024-02-17 04:12:27', '2024-02-17 04:12:27'),
-(3, '3953', 'Arfa Alam', 'Female', '2024-02-17 04:12:38', '2024-02-17 04:12:38'),
-(5, '4231', 'Nishat', 'Male', '2024-02-17 04:13:58', '2024-02-17 04:13:58'),
-(6, '9592', 'Rahul', 'Male', '2024-02-17 04:14:07', '2024-02-17 04:14:07'),
-(7, '6122', 'Emon', 'Male', '2024-02-17 04:25:02', '2024-02-17 04:25:02'),
-(8, '1751', 'Bokul', 'Male', '2024-02-17 04:25:08', '2024-02-17 04:25:08'),
-(9, '4356', 'Shamim', 'Male', '2024-02-17 04:25:16', '2024-02-17 04:25:16'),
-(10, '7681', 'Shakib', 'Male', '2024-02-17 04:25:22', '2024-02-17 04:25:22'),
-(12, '1073', 'Ahnaf', 'Male', '2024-02-17 04:25:46', '2024-02-17 04:25:46');
+INSERT INTO `guest_invitations` (`id`, `guest_id`, `unique_identifier`, `name`, `company_name`, `gender`, `created_at`, `updated_at`) VALUES
+(1, '101', '764240', 'Abu Motaleb', 'Dbug Station Limited', 'Male', '2024-02-20 22:17:29', '2024-02-20 22:17:29'),
+(2, '102', '703263', 'Bokul Khan', 'Saidpur Dev', 'Male', '2024-02-20 22:17:57', '2024-02-20 22:17:57'),
+(3, '103', '959131', 'Arfa', 'Sylhet Tech', 'Female', '2024-02-20 22:20:05', '2024-02-20 22:20:05');
 
 -- --------------------------------------------------------
 
@@ -91,8 +86,8 @@ CREATE TABLE `migrations` (
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(2, '2024_02_16_215547_create_guest_invitations_table', 1),
-(3, '2024_02_16_215618_create_check_ins_table', 1);
+(5, '2024_02_16_215618_create_check_ins_table', 2),
+(6, '2024_02_16_215547_create_guest_invitations_table', 3);
 
 -- --------------------------------------------------------
 
@@ -152,19 +147,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `check_ins`
 --
 ALTER TABLE `check_ins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `guest_invitations`
 --
 ALTER TABLE `guest_invitations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
