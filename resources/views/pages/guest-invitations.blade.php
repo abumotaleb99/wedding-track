@@ -30,7 +30,7 @@
               <td class=" text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $i++ }}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->name }}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->gender }}</td>
-                <td id="barcode-svg-{{ $guest->unique_identifier }}">
+              <td id="barcode-svg-{{ $guest->unique_identifier }}">
                   {!!  DNS2D::getBarcodeSVG($guest->unique_identifier, 'DATAMATRIX' ,10,10) !!}
                   <br>
                   <button 
@@ -44,10 +44,6 @@
               </td>
             </tr>
             @endforeach
-          @else
-            <tr>
-              <td colspan="5" class="text-center">No data found.</td>
-            </tr>
           @endif
         </tbody>
       </table>
@@ -123,6 +119,7 @@
             errorToast(error.response.data['message']);
         }
     }
+    
   }
 
   function displayValidationErrors(errors) {

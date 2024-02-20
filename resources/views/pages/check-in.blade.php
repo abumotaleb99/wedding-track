@@ -5,7 +5,7 @@
   <div class="overflow-x-auto">
     <div class="inline-block min-w-full rounded-md overflow-hidden">
       <h2 class="text-2xl text-[#090B10] font-montserrat font-bold py-3">Check-In List</h2>
-      <table class="min-w-full" id="checkInTable">
+      <table class="min-w-full" id="myTable">
         <thead>
           <tr class="border">
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">ID</th>
@@ -25,18 +25,17 @@
 @push('script')
 <script>
   function formatDateTime(dateTimeString) {
-      const date = new Date(dateTimeString);
-      const utcOffsetMinutes = date.getTimezoneOffset(); // Get the timezone offset in minutes
-      date.setMinutes(date.getMinutes() + utcOffsetMinutes); // Adjust date by subtracting the offset
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = date.getHours() % 12 || 12; // Convert to 12-hour format
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const period = date.getHours() >= 12 ? 'PM' : 'AM';
+    const date = new Date(dateTimeString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = date.getHours() % 12 || 12; // Convert to 12-hour format
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const period = date.getHours() >= 12 ? 'PM' : 'AM';
 
-      return `${year}-${month}-${day} - ${hours}:${minutes} ${period}`;
-  }
+    return `${year}-${month}-${day} - ${hours}:${minutes} ${period}`;
+}
+
 
   async function getCheckInList() {
       try {

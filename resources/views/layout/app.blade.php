@@ -72,6 +72,9 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script>
+    new DataTable('#myTable',{
+        order:[[0,'desc']],
+    });
       // Show the loader when the page starts loading
       window.addEventListener('load', function() {
         document.getElementById('loader').classList.add('d-none');
