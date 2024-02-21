@@ -26,6 +26,8 @@
 
 @push('script')
 <script>
+  let serialId = 0;
+
   function formatDateTime(dateTimeString) {
     const date = new Date(dateTimeString);
     const year = date.getFullYear();
@@ -53,7 +55,7 @@
       data.data.forEach((item, index) => {
         const formattedDateTime = formatDateTime(item.created_at);
         const row = `<tr class="border">
-          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${index + 1}</td>
+          <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${++serialId}</td>
           <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.guest_id}</td>
           <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.name}</td>
           <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">${item.guest_invitation.company_name}</td>
@@ -63,9 +65,13 @@
         tableBody.insertAdjacentHTML("beforeend", row);
       });
 
-      $('#checkInTable').DataTable({
-        order: [[0, 'desc']],
-      });
+      if (!$.fn.DataTable.isDataTable('#checkInTable')) {
+            $('#checkInTable').DataTable({
+                order: [[0, 'desc']],
+            });
+        } else {
+            $('#checkInTable').DataTable().draw();
+        }
     } catch (error) {
       console.error(error);
     }
@@ -118,13 +124,26 @@
 
           if (res.data.success) {
             // If guest information is retrieved successfully, save the ID in the check-ins table
+
             try {
                 let checkInResponse = await axios.post("/api/check-in", { guest_invitation_id: res.data.data.id });
-                // console.log("Check-in Response:", checkInResponse); 
+                    // console.log("Check-in Response:", checkInResponse); 
 
                 if (checkInResponse.data.status == 'success') {
+                  const formattedDateTime = formatDateTime(new Date().toISOString());
+                  $('#checkInTable').DataTable().row.add([
+                      ++serialId,
+                      res.data.data.guest_id,
+                      res.data.data.name,
+                      res.data.data.company_name,
+                      res.data.data.gender,
+                      formattedDateTime
+                  ]).draw(false);
+
                   getCheckInList();
+
                   successToast(checkInResponse.response.data['message']);
+                  
                 }
 
             } catch (error) {
