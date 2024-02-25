@@ -8,7 +8,7 @@
       <table class="min-w-full" id="checkInTable">
         <thead>
           <tr class="border">
-            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">ID</th>
+            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">SI</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Guest ID</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Name</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Company Name</th>
@@ -26,7 +26,7 @@
 
 @push('script')
 <script>
-  let serialId = 0;
+  let serialId = document.querySelectorAll('#checkInTable tbody tr').length;
 
   function formatDateTime(dateTimeString) {
     const date = new Date(dateTimeString);
@@ -51,6 +51,8 @@
 
       const tableBody = document.getElementById("checkInTableBody");
       tableBody.innerHTML = ""; // Clear existing rows
+      // Reset serialId based on the existing number of rows
+      serialId = document.querySelectorAll('#checkInTable tbody tr').length;
 
       data.data.forEach((item, index) => {
         const formattedDateTime = formatDateTime(item.created_at);
@@ -119,31 +121,33 @@
       console.log(e.detail); // Log the scanned ID
 
       try {
-          let res = await axios.get("/api/guest/"+ parseInt(e.detail));
+          var baseUrl = '{{ config('app.url') }}';
+          let res = await axios.get(baseUrl + "/api/guest/"+ parseInt(e.detail));
           // console.log("API Response:", res);
 
           if (res.data.success) {
             // If guest information is retrieved successfully, save the ID in the check-ins table
 
             try {
-                let checkInResponse = await axios.post("/api/check-in", { guest_invitation_id: res.data.data.id });
-                    // console.log("Check-in Response:", checkInResponse); 
+                let checkInResponse = await axios.post(baseUrl + "/api/check-in", { guest_invitation_id: res.data.data.id });
+                // console.log("Check-in Response:", checkInResponse); 
 
                 if (checkInResponse.data.status == 'success') {
+                  const successMessage = checkInResponse.data.message;
+                  successToast(successMessage);
+
                   const formattedDateTime = formatDateTime(new Date().toISOString());
+
                   $('#checkInTable').DataTable().row.add([
-                      ++serialId,
-                      res.data.data.guest_id,
-                      res.data.data.name,
-                      res.data.data.company_name,
-                      res.data.data.gender,
-                      formattedDateTime
+                    ++serialId,
+                    res.data.data.guest_id,
+                    res.data.data.name,
+                    res.data.data.company_name,
+                    res.data.data.gender,
+                    formattedDateTime
                   ]).draw(false);
 
-                  getCheckInList();
-
-                  successToast(checkInResponse.response.data['message']);
-                  
+                  // getCheckInList(); 
                 }
 
             } catch (error) {

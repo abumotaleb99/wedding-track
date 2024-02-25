@@ -15,7 +15,7 @@
       <table class="min-w-full" id="myTable">
         <thead>
           <tr class="border">
-            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">ID</th>
+            <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">SI</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Guest ID</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Name</th>
             <th class="text-left text-base text-gray-600 font-nunito font-bold px-4 py-3">Company Name</th>
@@ -35,7 +35,7 @@
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->company_name }}</td>
               <td class="text-[#090B10] text-sm font-nunito font-semibold p-4">{{ $guest->gender }}</td>
               <td id="barcode-svg-{{ $guest->unique_identifier }}" class="flex items-center gap-3">
-                  {!!  DNS2D::getBarcodeSVG($guest->unique_identifier, 'DATAMATRIX' ,10,10) !!}
+                  {!!  DNS2D::getBarcodeSVG($guest->unique_identifier, 'DATAMATRIX' ,20,20) !!}
                   <button 
                     onclick="downloadBarcode('barcode-svg-{{ $guest->unique_identifier }}', '{{ $guest->unique_identifier }}', 'jpg')" 
                     class="border-2 border-[#099000] text-[#099000] hover:bg-[#099000] hover:text-white text-sm font-nunito font-bold py-1 px-4 rounded"
